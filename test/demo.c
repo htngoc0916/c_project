@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 
 typedef struct _addressBook{
     char names[11];
@@ -57,11 +56,6 @@ int main(){
 //         {"Eve", "654 Birch St, Anytown, USA", "567-890-1234", "eve@example.com"}
 //     };
     
-//     FILE *fp = fopen("data.txt","wb");
-//     if(fp != NULL){
-//         fwrite(addressBook, sizeof(AddressBook), 5, fp);
-//         fclose(fp);
-//     }
-    
+
 //     return 0;
 // }

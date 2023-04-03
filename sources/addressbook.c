@@ -3,25 +3,25 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "addressbook.h"
+#include "../headers/addressbook.h"
 
-//ë©”ì¸ Form
+//¸ŞÀÎ Form
 void OnMenu(){
     //char buffer[1024];
     char* buffer = (char*) malloc(1024);
     int length;
     int menuOptions = 7;
     int count = 0;
-    char *menu[20] = {"ê¸°ì¬í•˜ê¸°", "ì°¾ê¸°", "ê³ ì¹˜ê¸°", "ì§€ìš°ê¸°", "ì •ë¦¬í•˜ê¸°", "ì „ì²´ë³´ê¸°", "ëë‚´ê¸°"}; 
+    char *menu[20] = {"±âÀçÇÏ±â", "Ã£±â", "°íÄ¡±â", "Áö¿ì±â", "Á¤¸®ÇÏ±â", "ÀüÃ¼º¸±â", "³¡³»±â"}; 
    
     //system("cls"); windows
-    system("clear"); //macbook
+    system("cls"); //macbook
     length=sprintf(buffer,"\n");
-    length+=sprintf(buffer+length, "%31s %s","", "ì£¼ì†Œë¡ v.01\n");
+    length+=sprintf(buffer+length, "%31s %s","", "ÁÖ¼Ò·Ï v.01\n");
     length+=sprintf(buffer+length, "=============================================================================\n\n");
     for(int i=0; i< menuOptions; i++){
         count++;
-        if(count == menuOptions) count =0; //0. ëë‚´ê¸° ìƒ›íŒ…
+        if(count == menuOptions) count =0; //0. ³¡³»±â »ûÆÃ
         length+=sprintf(buffer + length,"%32d . %s\n", count, menu[i]);
     }
     length+=sprintf(buffer+length,"\n");
@@ -29,7 +29,7 @@ void OnMenu(){
     printf("%s",buffer);
     free(buffer);
 }
-//ì„ ì–¸
+//¼±¾ğ
 void Create(AddressBook *addressBook){
     #if 1
         addressBook->personal =(PersonalInformation(*))malloc(sizeof(PersonalInformation)*LINES);
@@ -41,44 +41,20 @@ void Create(AddressBook *addressBook){
         addressBook->count = 0;
     }
 }
-//ë©”ëª¨ë¦¬ í•´ì œ
+//¸Ş¸ğ¸® ÇØÁ¦
 void Destroy(AddressBook *addressBook){
     if(addressBook->personal != NULL){
         free(addressBook->personal);
         addressBook->count = 0;
     }
 }
-//ì¡ë ¹
+//Á´·É
 void Arrange(AddressBook *addressBook){
-    // int i, j;
-    // int emptyCount = 0;
-    // PersonalInformation temp;
-
-    // for (i = 1; i < LINES; i++) {
-    //     if (addressBook->personal[i].names[0] == '\0') {
-    //         // Náº¿u dÃ²ng Ä‘ang xÃ©t lÃ  rá»—ng, Ä‘Æ°a nÃ³ xuá»‘ng phÃ­a dÆ°á»›i
-    //         temp = addressBook->personal[i];
-    //         for (j = i; j < LINES - 1 - emptyCount; j++) {
-    //             addressBook->personal[j] = addressBook->personal[j+1];
-    //         }
-    //         addressBook->personal[j] = temp;
-    //         emptyCount++;
-    //     } else {
-    //         // Náº¿u khÃ´ng pháº£i dÃ²ng rá»—ng, thá»±c hiá»‡n sáº¯p xáº¿p nhÆ° bÃ¬nh thÆ°á»ng
-    //         temp = addressBook->personal[i];
-    //         j = i-1;
-    //         while (j >= 0 && strcmp(addressBook->personal[j].names, temp.names) > 0) {
-    //             addressBook->personal[j+1] = addressBook->personal[j];
-    //             j--;
-    //         }
-    //         addressBook->personal[j+1] = temp;
-    //     }
-    // }
     int i, j;
     PersonalInformation temp;
     for (i = 1; i < LINES; i++) {
         if (addressBook->personal[i].names[0] == '\0') {
-            continue; // bá» qua dÃ²ng rá»—ng
+            continue; //bo qua dong rong
         }
         temp = addressBook->personal[i];
         j = i - 1;
@@ -89,7 +65,7 @@ void Arrange(AddressBook *addressBook){
         addressBook->personal[j + 1] = temp;
     }
 }
-//êº¼ë‚´ë‹¤
+//²¨³»´Ù
 int TakeOut(AddressBook *addressBook){
     int count=0;
     
@@ -100,34 +76,33 @@ int TakeOut(AddressBook *addressBook){
         }
         fclose(fp);
     }
+
+    addressBook->count = count;
     return count;
 }
-//ë„£ë‹¤.
+//³Ö´Ù.
 int TakeIn(AddressBook *addressBook){
     int i=0;
     int count=0;
     
-    //ì—†ìœ¼ë©´ íŒŒì¼ì´ ìƒì„± ìˆìœ¼ë©´ í˜„ì¬ ìˆëŠ” txt íŒŒì¼ì— ë„£ì„ ë‚´ìš©ì´ ì¶œë ¥ë¨.
+    //¾øÀ¸¸é ÆÄÀÏÀÌ »ı¼º ÀÖÀ¸¸é ÇöÀç ÀÖ´Â txt ÆÄÀÏ¿¡ ³ÖÀ» ³»¿ëÀÌ Ãâ·ÂµÊ.
     FILE *fp = fopen(path,"wb");
     if(fp != NULL){
         while (i<LINES && strcmp(addressBook->personal[i].names,"\0")!=0){
             count++;
             i++;
         }
-
-        printf("\n ddd %d \n", count);
+        
         if(count>0){
             if(fp != NULL){
                 fwrite(addressBook->personal, sizeof(PersonalInformation), count, fp);
             }
         }
         fclose(fp);
-
-        addressBook->count = count;
     }
     return count;
 }
-//ê¸°ì¬í•˜ë‹¤
+//±âÀçÇÏ´Ù
 int Record(AddressBook *addressBook, char *name, char *address, char *phoneNumber, char *emailAddress){
     int line;
     line = addressBook->count;
@@ -143,7 +118,7 @@ int Record(AddressBook *addressBook, char *name, char *address, char *phoneNumbe
     }
     return line;
 }
-//ì„±ëª…ìœ¼ë¡œ ì°¾ë‹¤
+//¼º¸íÀ¸·Î Ã£´Ù
 int FindByName(AddressBook *addressBook, char(*name), int(*lines)){
     int count=0;
     int i=0;
@@ -158,7 +133,7 @@ int FindByName(AddressBook *addressBook, char(*name), int(*lines)){
     
     return count;
 }
-//ì´ë©”ì¼ë¡œ ì°¾ë‹¤
+//ÀÌ¸ŞÀÏ·Î Ã£´Ù
 int FindByEmail(AddressBook *addressBook, char(*emailAddress)){
     int line = -1;
     int i=0;
@@ -172,7 +147,7 @@ int FindByEmail(AddressBook *addressBook, char(*emailAddress)){
     
     return line;
 }
-//ê³ ì¹˜ë‹¤
+//°íÄ¡´Ù
 int Correct(AddressBook *addressBook, int correctLine, char (*address), char (*phoneNumber), char (*emailAddress)){
     int line =-1;
 
@@ -184,7 +159,7 @@ int Correct(AddressBook *addressBook, int correctLine, char (*address), char (*p
     }
     return line;
 }
-//ì§€ìš°ë‹¤
+//Áö¿ì´Ù
 int Erase(AddressBook *addressBook, int eraseLine){
     int i=0;
     int line=-1;
@@ -193,13 +168,13 @@ int Erase(AddressBook *addressBook, int eraseLine){
     if(0 <= eraseLine && eraseLine < LINES && strcmp(addressBook->personal[eraseLine].names,"")!=0){
         line= eraseLine;
         i=line;
-        //ì „ì²´ ë‚´ìš©ì„ íŒë³„
+        //ÀüÃ¼ ³»¿ëÀ» ÆÇº°
         while(i<LINES && strcmp(addressBook->personal[i].names,"\0")!=0){
             i++;
         }   
-        //ë‚´ê°€ ì§€ìš¸ë ¤ê³  í•˜ëŠ” ì¤„ì— ë‹¤ìŒ ì¤„ì— ë‚´ìš©ì´ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ íŒë³„
+        //³»°¡ Áö¿ï·Á°í ÇÏ´Â ÁÙ¿¡ ´ÙÀ½ ÁÙ¿¡ ³»¿ëÀÌ ÀÖ´ÂÁö ¾ø´ÂÁö ÆÇº°
         if(line < LINES && strcmp(addressBook->personal[line].names,"\0")!=0){
-            //ë‚´ê°€ ëì—ë²ˆí˜¸ê°€ ì•„ë‹ˆë‹ˆ ë’¤ì— ì •ë³´ë¥¼ ì•ìœ¼ë¡œ ëŒì–´ì˜¨ë‹¤.
+            //³»°¡ ³¡¿¡¹øÈ£°¡ ¾Æ´Ï´Ï µÚ¿¡ Á¤º¸¸¦ ¾ÕÀ¸·Î ²ø¾î¿Â´Ù.
             for(j=line; j<i; j++){
                 strcpy(addressBook->personal[j].names, addressBook->personal[j+1].names);
                 strcpy(addressBook->personal[j].addresses, addressBook->personal[j+1].addresses);
@@ -207,7 +182,7 @@ int Erase(AddressBook *addressBook, int eraseLine){
                 strcpy(addressBook->personal[j].emailAddresses, addressBook->personal[j+1].emailAddresses);
             }
         }
-        //ë‚´ê°€ ì§€ìš¸ë ¤ê³  í•˜ëŠ” ì¤„ì´ ëì— ë²ˆì§€ì´ë‹ˆ ë‚˜ë§Œ ì‚­ì œí•œë‹¤.
+        //³»°¡ Áö¿ï·Á°í ÇÏ´Â ÁÙÀÌ ³¡¿¡ ¹øÁöÀÌ´Ï ³ª¸¸ »èÁ¦ÇÑ´Ù.
         strcpy(addressBook->personal[i-1].names,"");
         strcpy(addressBook->personal[i-1].addresses,"");
         strcpy(addressBook->personal[i-1].phoneNumbers,"");

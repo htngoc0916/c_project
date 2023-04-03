@@ -2,24 +2,26 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "addressbook.h"
-#include "form.h"
+//#include "addressbook.h"
+//#include "form.h"
+#include "../headers/addressbook.h"
+#include "../headers/form.h"
 
 void FormForAllView(AddressBook *addressBook){
     char* buffer = (char*) malloc(1024);
     int length;
     
-    system("clear");
+    system("cls");
     length=sprintf(buffer,"\n");
-    length+=sprintf(buffer+length, "%25s %s","", "ì£¼ì†Œë¡ - ì „ì²´ë³´ê¸°\n");
+    length+=sprintf(buffer+length, "%25s %s","", "ÁÖ¼Ò·Ï - ÀüÃ¼º¸±â\n");
     length+=sprintf(buffer+length, "=============================================================================\n");
     length+=sprintf(buffer+length,"%-5s %-15s %-15s %-15s %s \n", "Line", "Name", "Address", "Phone", "Email");
     for(int i=0; i < LINES; i++){
         length+=sprintf(buffer +length, "%-5d %-15s %-15s %-15s %s \n", (i+1), addressBook->personal[i].names, addressBook->personal[i].addresses, addressBook->personal[i].phoneNumbers, addressBook->personal[i].emailAddresses);
     }
     length+=sprintf(buffer+length, "-----------------------------------------------------------------------------\n");
-    length+=sprintf(buffer+length, "ì „ í™”ë©´ì— ëŒì•„ê°‘ë‹ˆë‹¤. \n");
-    length+=sprintf(buffer+length, "=> Enterí‚¤ ëˆ„ë¥´ì„¸ìš”. \n");
+    length+=sprintf(buffer+length, "Àü È­¸é¿¡ µ¹¾Æ°©´Ï´Ù. \n");
+    length+=sprintf(buffer+length, "=> EnterÅ° ´©¸£¼¼¿ä. \n");
     length+=sprintf(buffer+length, "=============================================================================\n");
     printf("%s", buffer);
     free(buffer); 
@@ -34,44 +36,44 @@ void FormRecording(AddressBook *addressBook){
     char emailAddress[255];
     char address[256];
     char phoneNumber[18];
-    int line = -1; //result = -1: ê³µê°„ì´ ì—†ìŒ, result > 0 ì„±ê³µ
+    int line = -1; //result = -1: °ø°£ÀÌ ¾øÀ½, result > 0 ¼º°ø
     char ynFlag;
     int flag = 1;
 
     while(flag){
-        //system("clear"); //windows
-        system("clear"); //macbook
+        //system("cls"); //windows
+        system("cls"); //macbook
         length=sprintf(buffer,"\n");
-        length+=sprintf(buffer + length, "%25s %s","", "ê¸°ì¬í•˜ë‹¤ \n");
-        length+=sprintf(buffer + length, "%24s %s","", "[ì •ë³´ ê¸°ì¬] \n");
+        length+=sprintf(buffer + length, "%25s %s","", "±âÀçÇÏ´Ù \n");
+        length+=sprintf(buffer + length, "%24s %s","", "[Á¤º¸ ±âÀç] \n");
         length+=sprintf(buffer + length, "====================================================================\n");
         printf("%s",buffer);
-        //ì´ë©”ì¼
+        //ÀÌ¸ŞÀÏ
         do{
-            printf("\n ê¸°ì¬í•  ì´ë©”ì¼ì„ ì…ë ¥: ");
-            fgets(emailAddress, sizeof(emailAddress), stdin);   //scanf ì“°ë©´ '\n' í¬í•¨ ì €ì¥í•˜ê¸° ë•Œë¬¸ì— ì•ˆë©ë‹ˆë‹¤. fgets() ì ì•¼ë©ë‹ˆë‹¤.
-            emailAddress[strcspn(emailAddress, "\n")] = '\0'; // enter í•´ì œ
-            printf("\n ê°œì¬í•˜ì‹¤ ì´ë©”ì¼ì´ ë§›ìŠµë‹ˆê¹Œ? (y/n) : ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥      
+            printf("\n ±âÀçÇÒ ÀÌ¸ŞÀÏÀ» ÀÔ·Â: ");
+            fgets(emailAddress, sizeof(emailAddress), stdin);   //scanf ¾²¸é '\n' Æ÷ÇÔ ÀúÀåÇÏ±â ¶§¹®¿¡ ¾ÈµË´Ï´Ù. fgets() ›Ç¾ßµË´Ï´Ù.
+            emailAddress[strcspn(emailAddress, "\n")] = '\0'; // enter ÇØÁ¦
+            printf("\n °³ÀçÇÏ½Ç ÀÌ¸ŞÀÏÀÌ ¸À½À´Ï±î? (y/n) : ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå      
             getchar();
         }while (toupper(ynFlag) != 'Y');
         printf("--------------------------------------------------------------------\n");
 
-        //ì´ë©”ì¼ ì¤‘ë³µ
+        //ÀÌ¸ŞÀÏ Áßº¹
         if(toupper(ynFlag) == 'Y'){
             line = FindByEmail(addressBook, emailAddress);
             if(line >=0){
-                system("clear"); //macbook
+                system("cls"); //macbook
                 length=sprintf(buffer,"\n");
-                length+=sprintf(buffer + length, "%25s %s","", "ê¸°ì¬í•˜ë‹¤ \n");
-                length+=sprintf(buffer + length, "%24s %s","", "[ì •ë³´ ê¸°ì¬] \n");
+                length+=sprintf(buffer + length, "%25s %s","", "±âÀçÇÏ´Ù \n");
+                length+=sprintf(buffer + length, "%24s %s","", "[Á¤º¸ ±âÀç] \n");
                 length+=sprintf(buffer + length, "====================================================================\n\n");
-                length+=sprintf(buffer + length, "%5s ì…ë ¥í•˜ ì‹  %s ì´ë©”ì¼ì„ ì¤‘ë³µë˜ì—ˆìŠµë‹ˆë‹¤.\n","", emailAddress);
+                length+=sprintf(buffer + length, "%5s ÀÔ·ÂÇÏ ½Å %s ÀÌ¸ŞÀÏÀ» Áßº¹µÇ¾ú½À´Ï´Ù.\n","", emailAddress);
                 length+=sprintf(buffer + length, "====================================================================\n");
-                length+=sprintf(buffer + length, "%5s %s","", "NëŠ” ë’¤ë¡œ ëŒì•„ê°€ê¸°.\n");
+                length+=sprintf(buffer + length, "%5s %s","", "N´Â µÚ·Î µ¹¾Æ°¡±â.\n");
                 printf("%s",buffer);
-                printf("%5s %s","", "ê³„ì† ì…ë ¥í•˜ê² ìŠµë‹ˆê¹Œ? (y/n): ");
-                scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥      
+                printf("%5s %s","", "°è¼Ó ÀÔ·ÂÇÏ°Ú½À´Ï±î? (y/n): ");
+                scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå      
                 getchar();
                 if(toupper(ynFlag) != 'Y'){
                     return;
@@ -81,36 +83,36 @@ void FormRecording(AddressBook *addressBook){
             }
         }
 
-        //ì´ë¦„
+        //ÀÌ¸§
         do{
-            printf("\n ê¸°ì¬í•  ì„±ëª…ì„ ì…ë ¥: ");
-            //scanf("%s",name); scanf ì“°ë©´ '\n' í¬í•¨ ì €ì¥í•˜ê¸° ë•Œë¬¸ì— ì•ˆë©ë‹ˆë‹¤. fgets() ì ì•¼ë©ë‹ˆë‹¤.
+            printf("\n ±âÀçÇÒ ¼º¸íÀ» ÀÔ·Â: ");
+            //scanf("%s",name); scanf ¾²¸é '\n' Æ÷ÇÔ ÀúÀåÇÏ±â ¶§¹®¿¡ ¾ÈµË´Ï´Ù. fgets() ›Ç¾ßµË´Ï´Ù.
             fgets(name, sizeof(name), stdin);   
-            name[strcspn(name, "\n")] = '\0'; // enter í•´ì œ
-            printf("\n ê°œì¬í•˜ì‹¤ ì„±ëª…ì´ ë§›ìŠµë‹ˆê¹Œ? (y/n) : ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥      
+            name[strcspn(name, "\n")] = '\0'; // enter ÇØÁ¦
+            printf("\n °³ÀçÇÏ½Ç ¼º¸íÀÌ ¸À½À´Ï±î? (y/n) : ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå      
             getchar();
         }while (toupper(ynFlag) != 'Y');
         printf("--------------------------------------------------------------------\n");
 
-        //ì£¼ì†Œ
+        //ÁÖ¼Ò
         do{
-            printf("\n ê¸°ì¬í•  ì£¼ì†Œë¥¼ ì…ë ¥: ");
-            fgets(address, sizeof(address), stdin);   //scanf ì“°ë©´ '\n' í¬í•¨ ì €ì¥í•˜ê¸° ë•Œë¬¸ì— ì•ˆë©ë‹ˆë‹¤. fgets() ì ì•¼ë©ë‹ˆë‹¤.
-            address[strcspn(address, "\n")] = '\0'; // enter í•´ì œ
-            printf("\n ê°œì¬í•˜ì‹¤ ì¡°ì†Œê°€ ë§›ìŠµë‹ˆê¹Œ? (y/n) : ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥          
+            printf("\n ±âÀçÇÒ ÁÖ¼Ò¸¦ ÀÔ·Â: ");
+            fgets(address, sizeof(address), stdin);   //scanf ¾²¸é '\n' Æ÷ÇÔ ÀúÀåÇÏ±â ¶§¹®¿¡ ¾ÈµË´Ï´Ù. fgets() ›Ç¾ßµË´Ï´Ù.
+            address[strcspn(address, "\n")] = '\0'; // enter ÇØÁ¦
+            printf("\n °³ÀçÇÏ½Ç Á¶¼Ò°¡ ¸À½À´Ï±î? (y/n) : ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå          
             getchar();
         }while (toupper(ynFlag) != 'Y');
         printf("--------------------------------------------------------------------\n");
 
-        //ì „í™”ë²ˆí˜¸
+        //ÀüÈ­¹øÈ£
         do{
-            printf("\n ê¸°ì¬í•  ì „í™”ë²ˆí˜¸ë¥¼ ì…ë ¥: ");
-            fgets(phoneNumber, sizeof(phoneNumber), stdin);   //scanf ì“°ë©´ '\n' í¬í•¨ ì €ì¥í•˜ê¸° ë•Œë¬¸ì— ì•ˆë©ë‹ˆë‹¤. fgets() ì ì•¼ë©ë‹ˆë‹¤.
-            phoneNumber[strcspn(phoneNumber, "\n")] = '\0'; // enter í•´ì œ
-            printf("\n ê°œì¬í•˜ì‹¤ ì „í™”ë²ˆí˜¸ê°€ ë§›ìŠµë‹ˆê¹Œ? (y/n) : ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥        
+            printf("\n ±âÀçÇÒ ÀüÈ­¹øÈ£¸¦ ÀÔ·Â: ");
+            fgets(phoneNumber, sizeof(phoneNumber), stdin);   //scanf ¾²¸é '\n' Æ÷ÇÔ ÀúÀåÇÏ±â ¶§¹®¿¡ ¾ÈµË´Ï´Ù. fgets() ›Ç¾ßµË´Ï´Ù.
+            phoneNumber[strcspn(phoneNumber, "\n")] = '\0'; // enter ÇØÁ¦
+            printf("\n °³ÀçÇÏ½Ç ÀüÈ­¹øÈ£°¡ ¸À½À´Ï±î? (y/n) : ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå        
             getchar();
         }while (toupper(ynFlag) != 'Y');
         printf("--------------------------------------------------------------------\n");
@@ -119,40 +121,40 @@ void FormRecording(AddressBook *addressBook){
 
         if(line != -1){
             //getchar(); 
-            system("clear"); //macbook
+            system("cls"); //macbook
             length=sprintf(buffer,"\n");
-            length+=sprintf(buffer + length, "%25s %s","", "ê¸°ì¬í•˜ë‹¤ \n");
-            length+=sprintf(buffer + length, "%24s %s","", "[ì •ë³´ ê¸°ì¬] \n");
+            length+=sprintf(buffer + length, "%25s %s","", "±âÀçÇÏ´Ù \n");
+            length+=sprintf(buffer + length, "%24s %s","", "[Á¤º¸ ±âÀç] \n");
             length+=sprintf(buffer + length, "====================================================================\n");
-            length+=sprintf(buffer + length, "%3s %s \n\n","", "ê¸°ì¬ ì„±ê³µë˜ì˜€ìŠµë‹ˆë‹¤.");
-            length+=sprintf(buffer + length, "%s \n","ì…ë ¥ì •ë³´");
-            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","ì„±ëª…",name);
-            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","ì¡°ìˆ˜", address);
-            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","ì „í™”ë²ˆí˜¸", phoneNumber);
-            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","ì´ë©”ì¼", emailAddress);
+            length+=sprintf(buffer + length, "%3s %s \n\n","", "±âÀç ¼º°øµÇ¿´½À´Ï´Ù.");
+            length+=sprintf(buffer + length, "%s \n","ÀÔ·ÂÁ¤º¸");
+            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","¼º¸í",name);
+            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","Á¶¼ö", address);
+            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","ÀüÈ­¹øÈ£", phoneNumber);
+            length+=sprintf(buffer + length, "%5s %-10s : %s \n","","ÀÌ¸ŞÀÏ", emailAddress);
             length+=sprintf(buffer + length, "--------------------------------------------------------------------\n");
-            length+=sprintf(buffer + length, "%15s: %d/%d \n\n","ê¸°ì¬ëœ ë‚´ìš©", line, LINES);
-            length+=sprintf(buffer + length, "%s: %d %s \n\n", "ì…ë ¥í•˜ì‹  ì •ë³´ë¥¼", line, "ì¤„ì— ê¸°ì¬í•˜ì˜€ìŠµë‹ˆë‹¤.");
+            length+=sprintf(buffer + length, "%15s: %d/%d \n\n","±âÀçµÈ ³»¿ë", line, LINES);
+            length+=sprintf(buffer + length, "%s: %d %s \n\n", "ÀÔ·ÂÇÏ½Å Á¤º¸¸¦", line, "ÁÙ¿¡ ±âÀçÇÏ¿´½À´Ï´Ù.");
             length += sprintf(buffer+length, "%3s %-5s %-8s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
             length+=sprintf(buffer + length, "%3s %-5d %-8s %-15s %-15s %s\n", "", line, name, address, phoneNumber, emailAddress);
             length+=sprintf(buffer + length, "--------------------------------------------------------------------\n");
             printf("%s", buffer);   
-            printf("ê³„ì† ì…ë ¥í•˜ê² ìŠµë‹ˆê¹Œ? (y/n): ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥ 
+            printf("°è¼Ó ÀÔ·ÂÇÏ°Ú½À´Ï±î? (y/n): ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå 
             getchar();
             if(toupper(ynFlag) != 'Y') flag = 0;
         } else { 
             getchar(); 
-            system("clear"); //macbook
+            system("cls"); //macbook
             length=sprintf(buffer,"\n");
-            length+=sprintf(buffer + length, "%25s %s","", "ê¸°ì¬í•˜ë‹¤ \n");
-            length+=sprintf(buffer + length, "%24s %s","", "[ì •ë³´ ê¸°ì¬] \n");
+            length+=sprintf(buffer + length, "%25s %s","", "±âÀçÇÏ´Ù \n");
+            length+=sprintf(buffer + length, "%24s %s","", "[Á¤º¸ ±âÀç] \n");
             length+=sprintf(buffer + length, "====================================================================\n\n");
-            length+=sprintf(buffer + length, "%1s %s","", "ê¸°ì¬í•  ê³µê°„ì´ ì—†ìŠµë‹ˆë‹¤. \n");
+            length+=sprintf(buffer + length, "%1s %s","", "±âÀçÇÒ °ø°£ÀÌ ¾ø½À´Ï´Ù. \n");
             length+=sprintf(buffer + length, "--------------------------------------------------------------------\n\n");
-            length+=sprintf(buffer + length, "%1s %s","", "ê¸°ì¬í•  ê³µê°„ì´ ì—†ìŠµë‹ˆë‹¤. \n\n");
-            length+=sprintf(buffer + length, "%3s %s","", "ì£¼ë©”ë‰´ë¡œ ì´ë™í•©ë‹ˆë‹¤. \n");
-            length+=sprintf(buffer + length, "%3s %s","", "=> Enterí‚¤ë¥¼ ëˆ„ë¥´ì„¸ìš”. \n");
+            length+=sprintf(buffer + length, "%1s %s","", "±âÀçÇÒ °ø°£ÀÌ ¾ø½À´Ï´Ù. \n\n");
+            length+=sprintf(buffer + length, "%3s %s","", "ÁÖ¸Ş´º·Î ÀÌµ¿ÇÕ´Ï´Ù. \n");
+            length+=sprintf(buffer + length, "%3s %s","", "=> EnterÅ°¸¦ ´©¸£¼¼¿ä. \n");
             printf("%s", buffer);   
             getchar();
             free(buffer);
@@ -168,28 +170,28 @@ void FormForFinding(AddressBook *addressBook){
     int options;
 
     while (flag){
-        //system("clear");
-        system("clear");
+        //system("cls");
+        system("cls");
         length=sprintf(buffer,"\n");
-        length+=sprintf(buffer+length, "%30s %s","", "ì°¾ë‹¤\n");
-        length+=sprintf(buffer+length, "%28s %s","", "ë©”ë‰´ - ì„ íƒ\n");
+        length+=sprintf(buffer+length, "%30s %s","", "Ã£´Ù\n");
+        length+=sprintf(buffer+length, "%28s %s","", "¸Ş´º - ¼±ÅÃ\n");
         length+=sprintf(buffer+length, "=============================================================================\n\n");
-        length+=sprintf(buffer+length, "%24s %s","", "1. ì„±ëª…ìœ¼ë¡œ ì°¾ë‹¤.\n");
-        length+=sprintf(buffer+length, "%24s %s","", "2. ì´ë©”ì¼ë¡œ ì°¾ë‹¤.\n");
-        length+=sprintf(buffer+length, "%24s %s","", "0. ë’¤ë¡œ ëŒì•„ê°€ê¸°.\n");
+        length+=sprintf(buffer+length, "%24s %s","", "1. ¼º¸íÀ¸·Î Ã£´Ù.\n");
+        length+=sprintf(buffer+length, "%24s %s","", "2. ÀÌ¸ŞÀÏ·Î Ã£´Ù.\n");
+        length+=sprintf(buffer+length, "%24s %s","", "0. µÚ·Î µ¹¾Æ°¡±â.\n");
         length+=sprintf(buffer+length, "\n\n");
         length+=sprintf(buffer+length, "=============================================================================\n\n");
         printf("%s", buffer);
-        printf("ë©”ë‰´ë¥¼ ì„ íƒí•˜ì„¸ìš”: ");
+        printf("¸Ş´º¸¦ ¼±ÅÃÇÏ¼¼¿ä: ");
         scanf("%d", &options);
         getchar();
         switch(options){
             case 1:
-                //ì„±ëª…
+                //¼º¸í
                 FormForByName(addressBook);
                 break;
             case 2:
-                //ì´ë©”ì¼
+                //ÀÌ¸ŞÀÏ
                 FormForByEmailAddressses(addressBook);
                 break;
             case 0:
@@ -206,25 +208,25 @@ void FormForErasing(AddressBook *addressBook){
     int line, count, maxLine;
     int lines[LINES];
     int flag = 1;
-    char checkLine = 'N'; //ì‚¬ì œë²ˆí˜¸ê°€ ì•ˆë§›ì„ë°
+    char checkLine = 'N'; //»çÁ¦¹øÈ£°¡ ¾È¸ÀÀ»µ¥
     char ynFlag;
 
     while(flag){
-        system("clear");
+        system("cls");
         length=sprintf(buffer,"\n");
-        length+=sprintf(buffer+length, "%30s %s","", "ì§€ìš°ê¸°\n");
+        length+=sprintf(buffer+length, "%30s %s","", "Áö¿ì±â\n");
         length+=sprintf(buffer+length, "=============================================================================\n");
         printf("%s", buffer);
-        printf("%3s %s", "", "ì§€ìš°ê³  ì‹¶ì€ ì„±ëª…ì„ ì…ë ¥í•´ì£¼ì„¸ìš”. \n");
+        printf("%3s %s", "", "Áö¿ì°í ½ÍÀº ¼º¸íÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä. \n");
         printf("%s", "-----------------------------------------------------------------------------\n");
         
         do{
-            printf("%10s %s", "", "ì„±ëª…: ");
+            printf("%10s %s", "", "¼º¸í: ");
             fgets(name, sizeof(name), stdin);   
-            name[strcspn(name, "\n")] = '\0'; // enter í•´ì œ
+            name[strcspn(name, "\n")] = '\0'; // enter ÇØÁ¦
             printf("\n");
-            printf("ì°¾ìœ¼ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+            printf("Ã£À¸½Ã°Ú½À´Ï±î? (y/n): ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
             getchar();    
             printf("-----------------------------------------------------------------------------\n");
         } while (toupper(ynFlag) != 'Y');
@@ -232,9 +234,9 @@ void FormForErasing(AddressBook *addressBook){
         count = FindByName(addressBook, name, lines);
         if(count > 0){
             while (checkLine != '\0'){
-                system("clear");
+                system("cls");
                 if(checkLine == 'N'){
-                    length += sprintf(buffer + length, "ê²€ìƒ‰ ê²°ê³¼: \n");
+                    length += sprintf(buffer + length, "°Ë»ö °á°ú: \n");
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                     length += sprintf(buffer+length,"%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                     for(int i=0; i<count; i++){
@@ -242,12 +244,12 @@ void FormForErasing(AddressBook *addressBook){
                         length+=sprintf(buffer +length, "%3s %-5d %-15s %-15s %-15s %s \n", "", maxLine, addressBook->personal[lines[i]].names, addressBook->personal[lines[i]].addresses, addressBook->personal[lines[i]].phoneNumbers, addressBook->personal[lines[i]].emailAddresses);
                     }
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
-                    length += sprintf(buffer + length, "ì§€ìš¸ ì¤„ ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” (%d ~ %d  ì‚¬ì´ì˜ ìˆ«ìë§Œ ì…ë ¥í•˜ì„¸ìš”). \n\n", 1, count);
+                    length += sprintf(buffer + length, "Áö¿ï ÁÙ ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä (%d ~ %d  »çÀÌÀÇ ¼ıÀÚ¸¸ ÀÔ·ÂÇÏ¼¼¿ä). \n\n", 1, count);
                 }else{
                     length = sprintf(buffer, "\n");
-                    length += sprintf(buffer + length, "%30s %s","", "ì§€ìš°ê¸°\n");
+                    length += sprintf(buffer + length, "%30s %s","", "Áö¿ì±â\n");
                     length += sprintf(buffer + length, "=============================================================================\n");
-                    length += sprintf(buffer + length, "%s", "ì§€ìš¸ ì¤„ ë²ˆí˜¸ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. \n");
+                    length += sprintf(buffer + length, "%s", "Áö¿ï ÁÙ ¹øÈ£°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù. \n");
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                     length += sprintf(buffer + length,"%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                     for(int i=0; i<count; i++){
@@ -255,56 +257,56 @@ void FormForErasing(AddressBook *addressBook){
                         length+=sprintf(buffer +length, "%3s %-5d %-15s %-15s %-15s %s \n", "", maxLine, addressBook->personal[lines[i]].names, addressBook->personal[lines[i]].addresses, addressBook->personal[lines[i]].phoneNumbers, addressBook->personal[lines[i]].emailAddresses);
                     }
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
-                    length += sprintf(buffer + length, "ì§€ìš¸ ì¤„ ë²ˆí˜¸ë¥¼ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. (%d ~ %d  ì‚¬ì´ì˜ ìˆ«ìë§Œ ì…ë ¥í•˜ì„¸ìš”). \n\n", 1, count);
+                    length += sprintf(buffer + length, "Áö¿ï ÁÙ ¹øÈ£¸¦ ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. (%d ~ %d  »çÀÌÀÇ ¼ıÀÚ¸¸ ÀÔ·ÂÇÏ¼¼¿ä). \n\n", 1, count);
                 }
                 printf("%s", buffer);
                 do{
-                    printf("ì¤„: ");
+                    printf("ÁÙ: ");
                     scanf("%d",&line);
                     getchar();
 
-                    printf("ì§€ìš°ì‹¤ ì¤„ ë²ˆí˜¸ê°€ ë§ìŠµë‹ˆê¹Œ? (y/n): ");
+                    printf("Áö¿ì½Ç ÁÙ ¹øÈ£°¡ ¸Â½À´Ï±î? (y/n): ");
                     scanf("%c",&ynFlag);
                     getchar();
                 }
                 while(toupper(ynFlag) != 'Y');
 
-                //ì¤„ì„ ì˜ëª»ì…ë ¥ ì²´í¬
-                system("clear");
+                //ÁÙÀ» Àß¸øÀÔ·Â Ã¼Å©
+                system("cls");
                 if(line <= 0 || line > maxLine){
-                    //ë²ˆí˜¸ ì˜ëª»ì…í–ˆìŒ
+                    //¹øÈ£ Àß¸øÀÔÇßÀ½
                     checkLine = 'Y';
                 }else{
-                    //ë²ˆí˜¸ ë§ìŒ
+                    //¹øÈ£ ¸ÂÀ½
                     checkLine = 'N';
                     count = Erase(addressBook, lines[line - 1]);
                     length = sprintf(buffer, "\n");
-                    length += sprintf(buffer + length, "%30s %s","", "ì§€ìš°ê¸°\n");
+                    length += sprintf(buffer + length, "%30s %s","", "Áö¿ì±â\n");
                     length += sprintf(buffer + length, "=============================================================================\n\n");
-                    length += sprintf(buffer + length, "%dë²ˆì¨° ì¤„ì´ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤. \n", count + 1);
+                    length += sprintf(buffer + length, "%d¹ø¤Š ÁÙÀÌ »èÁ¦µÇ¾ú½À´Ï´Ù. \n", count + 1);
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
                     printf("%s", buffer);
-                    printf("Nì„ ëˆ„ë¥´ë©´ ë©”ì¸ë©”ë‰´ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤. \n");
-                    printf("ê³„ì† ì§€ìš°ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
+                    printf("NÀ» ´©¸£¸é ¸ŞÀÎ¸Ş´º·Î µ¹¾Æ°©´Ï´Ù. \n");
+                    printf("°è¼Ó Áö¿ì½Ã°Ú½À´Ï±î? (y/n): ");
                     scanf("%c",&ynFlag);
                     getchar();
                     if(toupper(ynFlag) != 'Y'){
                         ynFlag = '\0';
                         return;
                     }else{
-                        //ë°˜ë³µëë‚´ê¸°
+                        //¹İº¹³¡³»±â
                         ynFlag = '\0';
                         break;
                     }
                 }
             }
         }else{
-            system("clear");
-            length += sprintf(buffer + length, "%3s %sì„(ë¥¼) ëª» ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", "", name);
+            system("cls");
+            length += sprintf(buffer + length, "%3s %sÀ»(¸¦) ¸ø Ã£¾Ò½À´Ï´Ù.\n", "", name);
             length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
             printf("%s", buffer);
-            printf("Nì„ ì…ë ¥í•˜ì‹œë©´ ë©”ì¸ë©”ë‰´ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤. \n ë‹¤ì‹œ ì…ë ¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+            printf("NÀ» ÀÔ·ÂÇÏ½Ã¸é ¸ŞÀÎ¸Ş´º·Î µ¹¾Æ°©´Ï´Ù. \n ´Ù½Ã ÀÔ·ÂÇÏ½Ã°Ú½À´Ï±î? (y/n): ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
             getchar();    
             printf("-----------------------------------------------------------------------------\n");
             if(toupper(ynFlag) != 'Y'){
@@ -328,20 +330,20 @@ void FormForCorrecting(AddressBook *addressBook){
     char checkLine = 'N';
     
     while (flag){
-        system("clear");
+        system("cls");
         length=sprintf(buffer,"\n");
-        length+=sprintf(buffer+length, "%30s %s","", "ê³ ì¹˜ê¸°\n");
+        length+=sprintf(buffer+length, "%30s %s","", "°íÄ¡±â\n");
         length+=sprintf(buffer+length, "=============================================================================\n");
         printf("%s", buffer);
-        printf("%3s %s", "", "ê³ ì¹˜ê³  ì‹¶ì€ ì„±ëª…ì„ ì…ë ¥í•´ì£¼ì„¸ìš”. \n");
+        printf("%3s %s", "", "°íÄ¡°í ½ÍÀº ¼º¸íÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä. \n");
         printf("%s", "-----------------------------------------------------------------------------\n");
         do{
-            printf("%10s %s", "", "ì„±ëª…: ");
+            printf("%10s %s", "", "¼º¸í: ");
             fgets(name, sizeof(name), stdin);   
-            name[strcspn(name, "\n")] = '\0'; // enter í•´ì œ
+            name[strcspn(name, "\n")] = '\0'; // enter ÇØÁ¦
             printf("\n");
-            printf("ê³ ì¹˜ ì„±ëª…ì´ ë§ìŠµë‹ˆê¹Œ? (y/n): ");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+            printf("°íÄ¡ ¼º¸íÀÌ ¸Â½À´Ï±î? (y/n): ");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
             getchar();    
             printf("-----------------------------------------------------------------------------\n");
             if(ynFlag == '0') return;
@@ -350,40 +352,40 @@ void FormForCorrecting(AddressBook *addressBook){
         count = FindByName(addressBook, name, lines);
         if(count > 0){
             while (checkLine != '\0'){
-                system("clear");
+                system("cls");
                 if(checkLine == 'N'){
-                    length += sprintf(buffer + length, "ê³ ì¹  %së¥¼(ì„) %dê±´ ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", name, count);
+                    length += sprintf(buffer + length, "°íÄ¥ %s¸¦(À») %d°Ç Ã£¾Ò½À´Ï´Ù.\n", name, count);
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
                     length += sprintf(buffer+length,"%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                     for(int i=0; i<count; i++){
-                        maxLine = i+1; //line ì…ë ¥ ì²´í¬ ì‹œ í•„ìš”
+                        maxLine = i+1; //line ÀÔ·Â Ã¼Å© ½Ã ÇÊ¿ä
                         length+=sprintf(buffer +length, "%3s %-5d %-15s %-15s %-15s %s \n", "", maxLine, addressBook->personal[lines[i]].names, addressBook->personal[lines[i]].addresses, addressBook->personal[lines[i]].phoneNumbers, addressBook->personal[lines[i]].emailAddresses);
                     }
                 }
                 else{
                     length = sprintf(buffer, "\n");
-                    length += sprintf(buffer + length, "%30s %s","", "ì§€ìš°ê¸°\n");
+                    length += sprintf(buffer + length, "%30s %s","", "Áö¿ì±â\n");
                     length += sprintf(buffer + length, "=============================================================================\n");
-                    length += sprintf(buffer + length, "%s", "ì§€ìš¸ ì¤„ ë²ˆí˜¸ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. \n");
+                    length += sprintf(buffer + length, "%s", "Áö¿ï ÁÙ ¹øÈ£°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù. \n");
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                     length += sprintf(buffer + length,"%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                     for(int i=0; i<count; i++){
-                        maxLine = i+1; //line ì…ë ¥ ì²´í¬ ì‹œ í•„ìš”
+                        maxLine = i+1; //line ÀÔ·Â Ã¼Å© ½Ã ÇÊ¿ä
                         length+=sprintf(buffer +length, "%3s %-5d %-15s %-15s %-15s %s \n", "", maxLine, addressBook->personal[lines[i]].names, addressBook->personal[lines[i]].addresses, addressBook->personal[lines[i]].phoneNumbers, addressBook->personal[lines[i]].emailAddresses);
                     }
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
-                    length += sprintf(buffer + length, "ì§€ìš¸ ì¤„ ë²ˆí˜¸ë¥¼ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. (%d ~ %d  ì‚¬ì´ì˜ ìˆ«ìë§Œ ì…ë ¥í•˜ì„¸ìš”). \n\n", 1, count);
+                    length += sprintf(buffer + length, "Áö¿ï ÁÙ ¹øÈ£¸¦ ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. (%d ~ %d  »çÀÌÀÇ ¼ıÀÚ¸¸ ÀÔ·ÂÇÏ¼¼¿ä). \n\n", 1, count);
                 }
                 length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                 printf("%s", buffer);
                 do{
                     
-                    printf("ê³ ì¹  ì¤„ ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”. \n");
-                    printf("ì¤„: ");
+                    printf("°íÄ¥ ÁÙ ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä. \n");
+                    printf("ÁÙ: ");
                     scanf("%d",&line);
                     getchar();
 
-                    printf("ê³ ì¹  ì¤„ ë²ˆí˜¸ê°€ ë§ìŠµë‹ˆê¹Œ? (y/n): ");
+                    printf("°íÄ¥ ÁÙ ¹øÈ£°¡ ¸Â½À´Ï±î? (y/n): ");
                     scanf("%c",&ynFlag);
                     getchar();
                     printf("\n");
@@ -391,92 +393,92 @@ void FormForCorrecting(AddressBook *addressBook){
                 }
                 while(toupper(ynFlag) != 'Y');
 
-                //ì¤„ì„ ì˜ëª»ì…ë ¥ ì²´í¬
-                system("clear");
+                //ÁÙÀ» Àß¸øÀÔ·Â Ã¼Å©
+                system("cls");
                 if(line <= 0 || line > maxLine){
-                    //ë²ˆí˜¸ ì˜ëª»ì…í–ˆìŒ
+                    //¹øÈ£ Àß¸øÀÔÇßÀ½
                     checkLine = 'Y';
                 }else{
-                    //ë²ˆí˜¸ ë§ìŒ
+                    //¹øÈ£ ¸ÂÀ½
                     checkLine = 'N';
                     length = sprintf(buffer, "\n");
-                    length += sprintf(buffer + length, "%30s %s","", "ê³ ì¹˜ê¸°\n");
+                    length += sprintf(buffer + length, "%30s %s","", "°íÄ¡±â\n");
                     length += sprintf(buffer + length, "=============================================================================\n\n");
-                    length += sprintf(buffer + length, "ê³ ì¹  ì¤„ ë²ˆí˜¸: %d \n\n", line);
+                    length += sprintf(buffer + length, "°íÄ¥ ÁÙ ¹øÈ£: %d \n\n", line);
                     length += sprintf(buffer + length, "%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                     length += sprintf(buffer + length, "%3s %-5d %-15s %-15s %-15s %s \n", "", line, addressBook->personal[lines[line - 1]].names, addressBook->personal[lines[line - 1]].addresses, addressBook->personal[lines[line - 1]].phoneNumbers, addressBook->personal[lines[line - 1]].emailAddresses);
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                     printf("%s", buffer);
-                    //ì£¼ì†Œ
+                    //ÁÖ¼Ò
                     do{
-                        printf("%10s %s", "", "ì£¼ì†Œ: ");
+                        printf("%10s %s", "", "ÁÖ¼Ò: ");
                         fgets(address, sizeof(address), stdin);   
-                        address[strcspn(address, "\n")] = '\0'; // enter í•´ì œ
+                        address[strcspn(address, "\n")] = '\0'; // enter ÇØÁ¦
                         printf("\n");
-                        printf("ê³ ì¹˜ ì£¼ì†Œê°€ ë§ìŠµë‹ˆê¹Œ? (y/n): ");
-                        scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+                        printf("°íÄ¡ ÁÖ¼Ò°¡ ¸Â½À´Ï±î? (y/n): ");
+                        scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
                         getchar();    
                         printf("-----------------------------------------------------------------------------\n");
                         if(ynFlag == '0') return;
                     } while (toupper(ynFlag) != 'Y');
-                    //ì „í™”ë²ˆí˜¸
+                    //ÀüÈ­¹øÈ£
                     do{
-                        printf("%10s %s", "", "ì „í™”ë²ˆí˜¸: ");
+                        printf("%10s %s", "", "ÀüÈ­¹øÈ£: ");
                         fgets(phoneNumber, sizeof(phoneNumber), stdin);   
-                        phoneNumber[strcspn(phoneNumber, "\n")] = '\0'; // enter í•´ì œ
+                        phoneNumber[strcspn(phoneNumber, "\n")] = '\0'; // enter ÇØÁ¦
                         printf("\n");
-                        printf("ê³ ì¹˜ ì „í™”ë²ˆí˜¸ê°€ ë§ìŠµë‹ˆê¹Œ? (y/n): ");
-                        scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+                        printf("°íÄ¡ ÀüÈ­¹øÈ£°¡ ¸Â½À´Ï±î? (y/n): ");
+                        scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
                         getchar();    
                         printf("-----------------------------------------------------------------------------\n");
                         if(ynFlag == '0') return;
                     } while (toupper(ynFlag) != 'Y');
-                    //ì´ë©”ì¼
+                    //ÀÌ¸ŞÀÏ
                     do{
-                        printf("%10s %s", "", "ì´ë©”ì¼: ");
+                        printf("%10s %s", "", "ÀÌ¸ŞÀÏ: ");
                         fgets(emailAddress, sizeof(emailAddress), stdin);   
-                        emailAddress[strcspn(emailAddress, "\n")] = '\0'; // enter í•´ì œ
+                        emailAddress[strcspn(emailAddress, "\n")] = '\0'; // enter ÇØÁ¦
                         printf("\n");
-                        printf("ê³ ì¹˜ ì´ë©”ì¼ì´ ë§ìŠµë‹ˆê¹Œ? (y/n): ");
-                        scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+                        printf("°íÄ¡ ÀÌ¸ŞÀÏÀÌ ¸Â½À´Ï±î? (y/n): ");
+                        scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
                         getchar();    
                         printf("-----------------------------------------------------------------------------\n");
                         if(ynFlag == '0') return;
                     } while (toupper(ynFlag) != 'Y');
 
-                    system("clear");
+                    system("cls");
                     length = sprintf(buffer, "\n");
-                    length += sprintf(buffer + length, "%30s %s","", "ê³ ì¹˜ê¸°\n");
+                    length += sprintf(buffer + length, "%30s %s","", "°íÄ¡±â\n");
                     length += sprintf(buffer + length, "=============================================================================\n\n");
-                    length += sprintf(buffer + length, "ê³ ì¹  ì¤„ ë²ˆí˜¸: %d \n", line);
+                    length += sprintf(buffer + length, "°íÄ¥ ÁÙ ¹øÈ£: %d \n", line);
                     length += sprintf(buffer + length, "%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                     length += sprintf(buffer + length, "%3s %-5d %-15s %-15s %-15s %s \n", "", line, addressBook->personal[lines[line - 1]].names, addressBook->personal[lines[line - 1]].addresses, addressBook->personal[lines[line - 1]].phoneNumbers, addressBook->personal[lines[line - 1]].emailAddresses);
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
-                    length += sprintf(buffer + length, "%5s ì£¼ì†Œ: %s \n","", address);
-                    length += sprintf(buffer + length, "%5s ì „í™”ë²ˆí˜¸: %s \n","", phoneNumber);
-                    length += sprintf(buffer + length, "%5s ì´ë©”ì¼: %s \n","", emailAddress);
+                    length += sprintf(buffer + length, "%5s ÁÖ¼Ò: %s \n","", address);
+                    length += sprintf(buffer + length, "%5s ÀüÈ­¹øÈ£: %s \n","", phoneNumber);
+                    length += sprintf(buffer + length, "%5s ÀÌ¸ŞÀÏ: %s \n","", emailAddress);
                     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                     printf("%s", buffer);
-                    printf("ê³ ì¹˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
+                    printf("°íÄ¡½Ã°Ú½À´Ï±î? (y/n): ");
                     scanf("%c",&ynFlag);
                     getchar();
                     if(toupper(ynFlag) != 'Y'){
-                         //ë°˜ë³µëë‚´ê¸°
+                         //¹İº¹³¡³»±â
                         break;
                     }else{
-                        system("clear");
+                        system("cls");
                         count = Correct(addressBook, lines[line-1], address, phoneNumber, emailAddress);
                         length = sprintf(buffer, "\n");
-                        length += sprintf(buffer + length, "%30s %s","", "ê³ ì¹˜ê¸°\n");
+                        length += sprintf(buffer + length, "%30s %s","", "°íÄ¡±â\n");
                         length += sprintf(buffer + length, "=============================================================================\n\n");
-                        length += sprintf(buffer + length, "%dì¤„ì„ ê³ ì³¤ìŠµë‹ˆë‹¤. \n", count + 1);
+                        length += sprintf(buffer + length, "%dÁÙÀ» °íÃÆ½À´Ï´Ù. \n", count + 1);
                         length += sprintf(buffer + length, "%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
                         length += sprintf(buffer + length, "%3s %-5d %-15s %-15s %-15s %s \n", "", count + 1, addressBook->personal[count].names, addressBook->personal[count].addresses, addressBook->personal[count].phoneNumbers, addressBook->personal[count].emailAddresses);
                         length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n");
                         printf("%s",buffer);
-                        //ë
-                        printf("ê³„ì† ê³ ì¹˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
-                        scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+                        //³¡
+                        printf("°è¼Ó °íÄ¡½Ã°Ú½À´Ï±î? (y/n): ");
+                        scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
                         getchar();    
                         if(toupper(ynFlag) == 'Y'){
                             break;
@@ -489,12 +491,12 @@ void FormForCorrecting(AddressBook *addressBook){
             }
         }
         else{
-            system("clear");
-            length += sprintf(buffer + length, "%3s %sì„(ë¥¼) ëª» ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", "", name);
+            system("cls");
+            length += sprintf(buffer + length, "%3s %sÀ»(¸¦) ¸ø Ã£¾Ò½À´Ï´Ù.\n", "", name);
             length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
             printf("%s", buffer);
-            printf("Enterí‚¤ ì…ë ¥í•˜ì„¸ìš”.");
-            scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥  
+            printf("EnterÅ° ÀÔ·ÂÇÏ¼¼¿ä.");
+            scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå  
         }
     }
     free(buffer); 
@@ -503,19 +505,19 @@ void FormForArranging(AddressBook *addressBook){
     char* buffer = (char*) malloc(1024);
     int length;
 
-    //system("clear");
-    system("clear");
+    //system("cls");
+    system("cls");
     Arrange(addressBook);
     length=sprintf(buffer,"\n");
-    length+=sprintf(buffer+length, "%25s %s","", "ì •ë ¬í•˜ê¸° \n");
+    length+=sprintf(buffer+length, "%25s %s","", "Á¤·ÄÇÏ±â \n");
     length+=sprintf(buffer+length, "=============================================================================\n");
     length+=sprintf(buffer+length,"%-5s %-15s %-15s %-15s %s \n", "Line", "Name", "Address", "Phone", "Email");
     for(int i=0; i < LINES; i++){
         length+=sprintf(buffer +length, "%-5d %-15s %-15s %-15s %s \n", (i+1), addressBook->personal[i].names, addressBook->personal[i].addresses, addressBook->personal[i].phoneNumbers, addressBook->personal[i].emailAddresses);
     }
     length+=sprintf(buffer+length, "-----------------------------------------------------------------------------\n");
-    length+=sprintf(buffer+length, "ì „ í™”ë©´ì— ëŒì•„ê°‘ë‹ˆë‹¤. \n");
-    length+=sprintf(buffer+length, "=> Enterí‚¤ ëˆ„ë¥´ì„¸ìš”. \n");
+    length+=sprintf(buffer+length, "Àü È­¸é¿¡ µ¹¾Æ°©´Ï´Ù. \n");
+    length+=sprintf(buffer+length, "=> EnterÅ° ´©¸£¼¼¿ä. \n");
     length+=sprintf(buffer+length, "=============================================================================\n");
     printf("%s", buffer);
     getchar();
@@ -528,21 +530,21 @@ void FormForByEmailAddressses(AddressBook *addressBook){
     char ynFlag;
     int count;
     int flag = 1;
-    //system("clear");
-    system("clear");
+    //system("cls");
+    system("cls");
     length=sprintf(buffer,"\n");
-    length+=sprintf(buffer+length, "%30s %s","", "ì°¾ë‹¤\n");
-    length+=sprintf(buffer+length, "%22s %s","", "[ì´ë©”ì¼ìœ¼ë¡œ ì°¾ê¸°]\n");
+    length+=sprintf(buffer+length, "%30s %s","", "Ã£´Ù\n");
+    length+=sprintf(buffer+length, "%22s %s","", "[ÀÌ¸ŞÀÏÀ¸·Î Ã£±â]\n");
     length+=sprintf(buffer+length, "=============================================================================\n");
     printf("%s", buffer);
     while (flag)
     {
-        printf("%20s %s", "", "ì´ë©”ì¼: ");
+        printf("%20s %s", "", "ÀÌ¸ŞÀÏ: ");
         fgets(email, sizeof(email), stdin);   
-        email[strcspn(email, "\n")] = '\0'; // enter í•´ì œ
+        email[strcspn(email, "\n")] = '\0'; // enter ÇØÁ¦
         printf("\n");
-        printf("ì°¾ìœ¼ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
-        scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥      
+        printf("Ã£À¸½Ã°Ú½À´Ï±î? (y/n): ");
+        scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå      
         getchar();
         printf("-----------------------------------------------------------------------------\n");
         if(toupper(ynFlag) == 'N'){
@@ -552,20 +554,20 @@ void FormForByEmailAddressses(AddressBook *addressBook){
         }
     }
 
-    system("clear");
+    system("cls");
     length += sprintf(buffer + length,"\n");
     count = FindByEmail(addressBook, email);
     if(count >= 0){
-        length += sprintf(buffer + length, "%3s %sì„(ë¥¼) ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", "", email);
+        length += sprintf(buffer + length, "%3s %sÀ»(¸¦) Ã£¾Ò½À´Ï´Ù.\n", "", email);
         length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
         length += sprintf(buffer + length, "%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
         length += sprintf(buffer + length, "%3s %-5d %-15s %-15s %-15s %s \n", "", (count + 1), addressBook->personal[count].names, addressBook->personal[count].addresses, addressBook->personal[count].phoneNumbers, addressBook->personal[count].emailAddresses);
     }else{
-        length += sprintf(buffer + length, "%3s %sì„(ë¥¼) ëª» ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", "", email);
+        length += sprintf(buffer + length, "%3s %sÀ»(¸¦) ¸ø Ã£¾Ò½À´Ï´Ù.\n", "", email);
     }
     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
-    length += sprintf(buffer + length, "%s \n", "ì°¾ë‹¤ ë©”ë‰´ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.");
-    length += sprintf(buffer + length, "%s \n", " => Enterí‚¤ ëˆŒëŸ¬ì£¼ì„¸ìš”...");
+    length += sprintf(buffer + length, "%s \n", "Ã£´Ù ¸Ş´º·Î µ¹¾Æ°©´Ï´Ù.");
+    length += sprintf(buffer + length, "%s \n", " => EnterÅ° ´­·¯ÁÖ¼¼¿ä...");
     printf("%s", buffer);
     free(buffer); 
     getchar();
@@ -578,21 +580,21 @@ void FormForByName(AddressBook *addressBook){
     int count;
     int lines[LINES];
     int flag = 1;
-    //system("clear");
-    system("clear");
+    //system("cls");
+    system("cls");
     length=sprintf(buffer,"\n");
-    length+=sprintf(buffer+length, "%30s %s","", "ì°¾ë‹¤\n");
-    length+=sprintf(buffer+length, "%22s %s","", "[ì„±ëª…ìœ¼ë¡œ ì°¾ê¸°]\n");
+    length+=sprintf(buffer+length, "%30s %s","", "Ã£´Ù\n");
+    length+=sprintf(buffer+length, "%22s %s","", "[¼º¸íÀ¸·Î Ã£±â]\n");
     length+=sprintf(buffer+length, "=============================================================================\n");
     printf("%s", buffer);
     while (flag)
     {
-        printf("%20s %s", "", "ì„±ëª…:");
+        printf("%20s %s", "", "¼º¸í:");
         fgets(name, sizeof(name), stdin);   
-        name[strcspn(name, "\n")] = '\0'; // enter í•´ì œ
+        name[strcspn(name, "\n")] = '\0'; // enter ÇØÁ¦
         printf("\n");
-        printf("ì°¾ìœ¼ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
-        scanf("%c", &ynFlag);    // ë¬¸ìë¥¼ ì…ë ¥ë°›ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥      
+        printf("Ã£À¸½Ã°Ú½À´Ï±î? (y/n): ");
+        scanf("%c", &ynFlag);    // ¹®ÀÚ¸¦ ÀÔ·Â¹Ş¾Æ¼­ º¯¼ö¿¡ ÀúÀå      
         getchar();
         printf("-----------------------------------------------------------------------------\n");
         if(toupper(ynFlag) == 'N'){
@@ -602,22 +604,22 @@ void FormForByName(AddressBook *addressBook){
         }
     }
 
-    system("clear");
+    system("cls");
     length += sprintf(buffer + length,"\n");
     count = FindByName(addressBook, name,lines);
     if(count > 0){
-        length += sprintf(buffer + length, "%3s %sì„(ë¥¼) %dê±´ ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", "", name, count);
+        length += sprintf(buffer + length, "%3s %sÀ»(¸¦) %d°Ç Ã£¾Ò½À´Ï´Ù.\n", "", name, count);
         length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
         length += sprintf(buffer+length,"%3s %-5s %-15s %-15s %-15s %s \n", "", "Line", "Name", "Address", "Phone", "Email");
         for(int i=0; i<count; i++){
             length+=sprintf(buffer +length, "%3s %-5d %-15s %-15s %-15s %s \n", "", lines[i]+1, addressBook->personal[lines[i]].names, addressBook->personal[lines[i]].addresses, addressBook->personal[lines[i]].phoneNumbers, addressBook->personal[lines[i]].emailAddresses);
         }
     }else{
-        length += sprintf(buffer + length, "%3s %sì„(ë¥¼) ëª» ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", "", name);
+        length += sprintf(buffer + length, "%3s %sÀ»(¸¦) ¸ø Ã£¾Ò½À´Ï´Ù.\n", "", name);
     }
     length += sprintf(buffer + length, "-----------------------------------------------------------------------------\n\n");
-    length += sprintf(buffer + length, "%s \n", "ì°¾ë‹¤ ë©”ë‰´ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.");
-    length += sprintf(buffer + length, "%s \n", " => Enterí‚¤ ëˆŒëŸ¬ì£¼ì„¸ìš”...");
+    length += sprintf(buffer + length, "%s \n", "Ã£´Ù ¸Ş´º·Î µ¹¾Æ°©´Ï´Ù.");
+    length += sprintf(buffer + length, "%s \n", " => EnterÅ° ´­·¯ÁÖ¼¼¿ä...");
     printf("%s", buffer);
     free(buffer); 
     getchar();
